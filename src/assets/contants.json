@@ -1,6 +1,6 @@
 {
     "userUrl":"https://jsonplaceholder.typicode.com/users",
-    "countryUrl":"http://worldtimeapi.org/api/timezone",
+    "countryUrl":"https://worldtimeapi.org/api/timezone",
     "postUrl":"https://jsonplaceholder.typicode.com/posts"
 
 }
