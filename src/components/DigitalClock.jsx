@@ -1,66 +1,91 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './css/DigitalClock.css';
+import CONSTANTS from '../assets/contants.json';
 
-const DigitalClock = ({t}) => {
-    // state to store time
-    console.log('t',t)
-    let hours = 1
-    let minutes = 12
-    let seconds = 14
+const DigitalClock = () => {
+  const [selectedOption, setSelectedOption] = useState('');
+  const [countries, setCountries] = useState([]);
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(true);
 
-    const initialTime = hours * 360000 + minutes * 6000 + seconds * 100;
+  const hours = Math.floor(time / 360000);
+  const minutes = Math.floor((time % 360000) / 6000);
+  const seconds = Math.floor((time % 6000) / 100);
+  let milliseconds = time % 100;
 
-    const [time, setTime] = useState(initialTime);
-  
-    // state to check stopwatch running or not
-    const [isRunning, setIsRunning] = useState(false);
-  
-    useEffect(() => {
-      let intervalId;
-      if (isRunning) {
-        // setting time from 0 to 1 every 10 milisecond using javascript setInterval method
-        intervalId = setInterval(() => setTime(time + 1), 10);
-      }
-      return () => clearInterval(intervalId);
-    }, [isRunning, time]);
-  
-    // Hours calculation
-     hours = Math.floor(time / 360000);
-  
-    // Minutes calculation
-     minutes = Math.floor((time % 360000) / 6000);
-  
-    // Seconds calculation
-     seconds = Math.floor((time % 6000) / 100);
-  
-    // Milliseconds calculation
-   let  milliseconds = time % 100;
-  
-    // Method to start and stop timer
-    const startAndStop = () => {
-      setIsRunning(!isRunning);
-    };
-  
-    // Method to reset timer back to 0
-    const reset = () => {
-      setTime(0);
-    };
-    return (
-      <div className="stopwatch-container">
-        <p className="stopwatch-time">
-          {hours}:{minutes.toString().padStart(2, "0")}:
-          {seconds.toString().padStart(2, "0")}:
-          {milliseconds.toString().padStart(2, "0")}
-        </p>
-        <div className="stopwatch-buttons">
-          <button className="stopwatch-button" onClick={startAndStop}>
-            {isRunning ? "Stop" : "Start"}
-          </button>
-          <button className="stopwatch-button" onClick={reset}>
-            Reset
-          </button>
-        </div>
-      </div>
-    );
+  const startAndStop = () => {
+    setIsRunning(!isRunning);
   };
+
+  const handleSelectChange = async (event) => {
+    const selectedValue = event.target.value;
+    setSelectedOption(selectedValue);
+    try {
+      const response = await axios.get(
+        `${CONSTANTS.countryUrl}/${selectedValue}`
+      );
+      const hour = response.data.datetime.substring(11, 13);
+      const minute = response.data.datetime.substring(14, 16);
+      const second = response.data.datetime.substring(17, 19);
+      setTime(hour * 360000 + minute * 6000 + second * 100);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    let intervalId;
+    if (isRunning) {
+      intervalId = setInterval(() => setTime(time + 1), 10);
+    }
+    return () => clearInterval(intervalId);
+  }, [isRunning, time]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const countryRes = await axios.get(CONSTANTS.countryUrl);
+        setCountries(countryRes.data);
+
+        const selectedValue = countryRes.data[0];
+        setSelectedOption(selectedValue);
+        const initialCountery = await axios.get(
+          `${CONSTANTS.countryUrl}/${selectedValue}`
+        );
+        const hour = initialCountery.data.datetime.substring(11, 13);
+        const minute = initialCountery.data.datetime.substring(14, 16);
+        const second = initialCountery.data.datetime.substring(17, 19);
+        setTime(hour * 360000 + minute * 6000 + second * 100);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+  return (
+    <div className="sub_header_div">
+      <select value={selectedOption} onChange={handleSelectChange}>
+        {countries.map((country) => (
+          <option key={country} value={country}>
+            {country}
+          </option>
+        ))}
+      </select>
+      <span>
+        <div className="stopwatch-container">
+          <div className='stopwatch_timer'>
+            {hours} : {minutes.toString().padStart(2, '0')} : {seconds.toString().padStart(2, '0')} : {milliseconds.toString().padStart(2, '0')}
+          </div>
+          <div>
+            <button className="stopwatch-button" onClick={startAndStop}>
+            Pause/Start
+            </button>
+          </div>
+        </div>
+      </span>
+    </div>
+  );
+};
 
 export default DigitalClock;

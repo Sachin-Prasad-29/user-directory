@@ -1,4 +1,3 @@
-// Routes.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
@@ -9,8 +8,7 @@ const AppRoutes = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/post" element={<Post />} /> */}
-        <Route path='/post/:id' element={<Post></Post>} />
+        <Route path="/profile/:id" element={<Post></Post>} />
       </Routes>
     </Router>
   );

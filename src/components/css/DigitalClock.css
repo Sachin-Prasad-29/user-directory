@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Play&display=swap');
+
+.sub_header_div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    word-wrap: normal;
+}
+
+.stopwatch-container{
+    display:flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.stopwatch_timer{
+    background-color: rgb(24, 22, 22);
+    color: rgb(47, 179, 255);
+    font-family: 'Play', sans-serif;
+    padding: 5px 10px;
+    border: 1px solid  rgb(47, 179, 255);
+    
+}
+
+@media screen and (max-width: 670px) {
+    .sub_header_div {
+      flex-direction: column;
+    }
+  
+    .stopwatch-container {
+      flex-direction: column;
+      width: 100%;
+    }
+  }

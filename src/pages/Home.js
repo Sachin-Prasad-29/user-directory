@@ -1,32 +1,31 @@
-// Home.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './css/Home.css';
 import UserList from '../components/UserList';
+import CONSTANTS from '../assets/contants.json';
 
 const Home = () => {
-    const userUrl = "https://jsonplaceholder.typicode.com/users"
-    const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(userUrl); 
-        console.log(response.data);
-        
-        setUsers(response.data); 
+        const response = await axios.get(CONSTANTS.userUrl);
+
+        setUsers(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-    fetchData(); 
-  }, []); 
+    fetchData();
+  }, []);
 
   return (
     <div>
-      <h1>Home Page</h1>
-      {users.map((user)=>
-        <UserList user={user}/>
-      )}
+      <header>Directory</header>
+      {users.map((user) => (
+        <UserList user={user} key={user.id} />
+      ))}
     </div>
   );
 };

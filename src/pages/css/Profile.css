@@ -1,6 +1,7 @@
 .main_div{
-    border: 1px solid black;
-    margin: 10px;
+    border: 1px solid gray;
+    border-radius: 5px;
+   padding: 20px;
 }
 
 .upper_header_div{
@@ -10,23 +11,29 @@
     padding: 10px;
 }
 
-.sub_header_div{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .user_details_main{
-   
-    border: 1px solid black;
+    border: 1px solid gray;
     border-radius: 5px;
     margin: 10px;
-    padding: 10px;
+    padding: 15px;
 }
 .user_detail_div{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 10px;
+}
+
+.popup_div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 20px;
+    border: 1px solid gray;
+   border-radius: 5px;
+
+
 }
 
 .post_list_div{
@@ -35,16 +42,4 @@
     align-items: stretch;
     cursor: pointer;
     
-}
-
-.post_card{
-    border: 1px solid black;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 5px;
-    
-}
-
-.post_title{
-    font-weight: 600;
 }
